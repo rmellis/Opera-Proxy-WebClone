@@ -1,0 +1,279 @@
+:root {
+  /* --- OPERA ONE DARK MODE (Glass Restored) --- */
+  /* We lower the alpha channel (the last number) to see the wallpaper */
+  --bg-overlay: rgba(20, 20, 25, 0.75); 
+  --sidebar-bg: rgba(20, 20, 23, 0.6);      
+  --toolbar-bg: transparent;      
+  
+  --island-bg: #2A2A2D;      
+  --tab-active: #3E3E42;      
+  --tab-text: #FFFFFF;
+  --tab-text-inactive: #B0B0B5;
+  --urlbar-bg: #2A2A2D;
+  --urlbar-text: #FFFFFF;
+  --accent: #FA1E4E;           
+  --accent-blue: #599EFE;     
+  --border: rgba(255, 255, 255, 0.1);
+  --menu-bg: #2B2B2F;
+  --menu-text: #FFF;
+  --shadow: 0 4px 20px rgba(0,0,0,0.4);
+  --dial-text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+  
+  --dial-bg: rgba(60, 60, 60, 0.4);
+  --dial-border: rgba(255, 255, 255, 0.1);
+  
+  --wallpaper: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop');
+}
+
+body.light-mode {
+  /* --- OPERA ONE LIGHT MODE --- */
+  --bg-overlay: rgba(255, 255, 255, 0.6); 
+  --sidebar-bg: rgba(255, 255, 255, 0.7);
+  --toolbar-bg: rgba(255, 255, 255, 0.9);
+  --island-bg: #F0F0F0;
+  --tab-active: #FFFFFF;
+  --tab-text: #000000;
+  --tab-text-inactive: #5F6368;
+  --urlbar-bg: #FFFFFF;
+  --urlbar-text: #000000;
+  --accent: #FA1E4E;
+  --accent-blue: #007AFF;
+  --border: rgba(0, 0, 0, 0.1);
+  --menu-bg: #FFFFFF;
+  --menu-text: #000;
+  --shadow: 0 4px 20px rgba(0,0,0,0.15);
+  
+  --dial-bg: rgba(255, 255, 255, 0.6);
+  --dial-border: rgba(255, 255, 255, 0.4);
+  
+  --wallpaper: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2070&auto=format&fit=crop');
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+ 
+body {
+  font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+  background-image: var(--wallpaper);
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: var(--tab-text);
+  height: 100vh;
+  display: flex;
+  flex-direction: row; 
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+
+/* --- SIDEBAR --- */
+#sidebar {
+  width: 52px;
+  background: var(--sidebar-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 14px 0;
+  gap: 18px;
+  z-index: 200;
+  border-right: 1px solid var(--border);
+  flex-shrink: 0;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+  
+  /* ADDED: Glass blur effect for sidebar */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.sidebar-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  color: var(--tab-text-inactive);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: 0.2s;
+}
+.sidebar-btn:hover { background: var(--island-bg); color: var(--tab-text); }
+.sidebar-btn.active { color: var(--accent-blue); background: var(--island-bg); }
+.sidebar-btn svg { width: 22px; height: 22px; fill: currentColor; }
+.sidebar-sep { width: 24px; height: 1px; background: var(--border); margin: 4px 0; }
+
+#opera-menu-btn {
+  width: 36px; height: 36px; padding: 2px;
+  border-radius: 50%; margin-bottom: 8px;
+  background: transparent !important;
+  border: none; opacity: 1 !important; cursor: pointer;
+}
+#opera-menu-btn:hover { transform: scale(1.1); }
+#opera-menu-btn img { width: 100%; height: 100%; object-fit: contain; }
+
+/* --- MAIN BROWSER AREA --- */
+#browser-column {
+  flex: 1; display: flex; flex-direction: column;
+  position: relative; background: transparent;
+}
+
+/* TOP BAR */
+#top-bar {
+  display: flex; flex-direction: column;
+  background: var(--bg-overlay);
+  padding: 8px 8px 4px 8px; gap: 6px; z-index: 100;
+  /* Increased blur for better glass effect */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+/* TABS */
+#tabs-strip {
+  display: flex; flex-direction: row; align-items: center;
+  height: 34px; gap: 6px; overflow-x: auto; scrollbar-width: none;
+}
+.tab {
+  display: inline-flex; align-items: center;
+  height: 34px; padding: 0 12px;
+  background: transparent; color: var(--tab-text-inactive);
+  border-radius: 8px; min-width: 140px; max-width: 220px; 
+  flex: 1; font-size: 12px; cursor: pointer;
+  position: relative; transition: 0.1s;
+  border: 1px solid transparent; flex-shrink: 0; 
+}
+.tab:hover:not(.active) { background: var(--island-bg); }
+.tab.active {
+  background: var(--island-bg); color: var(--tab-text);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1); border: 1px solid var(--border);
+}
+.tab.active::after {
+  content: ''; position: absolute; bottom: -1px; left: 10px; right: 10px; height: 2px;
+  background: var(--accent-blue); border-radius: 2px;
+}
+.tab-icon-area { width: 16px; height: 16px; margin-right: 8px; display:flex; align-items:center; }
+.tab-favicon { width: 14px; height: 14px; border-radius: 50%; }
+.tab-title { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tab-close {
+  width: 16px; height: 16px; border-radius: 50%; border: none;
+  background: transparent; color: inherit; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; opacity: 0;
+}
+.tab:hover .tab-close { opacity: 1; }
+.tab-close:hover { background: rgba(128,128,128,0.3); }
+
+#new-tab-btn {
+  width: 28px; height: 28px; display: inline-flex; align-items: center; justify-content: center;
+  background: var(--island-bg); border: 1px solid var(--border);
+  color: var(--tab-text); border-radius: 50%; cursor: pointer; flex-shrink: 0;
+}
+#new-tab-btn:hover { background: var(--tab-active); }
+
+/* ADDRESS BAR */
+#address-toolbar { display: flex; align-items: center; gap: 8px; height: 40px; }
+.nav-btn {
+  width: 32px; height: 32px; border: none; background: transparent;
+  color: var(--tab-text); border-radius: 6px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-btn:hover:not(:disabled) { background: var(--island-bg); }
+.nav-btn:disabled { opacity: 0.3; }
+.nav-btn svg { width: 18px; height: 18px; fill: currentColor; }
+
+#urlbar-container { flex: 1; position: relative; }
+#urlbar-wrapper {
+  display: flex; align-items: center; background: var(--urlbar-bg);
+  height: 36px; padding: 0 12px; border-radius: 18px; 
+  border: 1px solid var(--border); transition: 0.2s;
+}
+#urlbar-wrapper:focus-within {
+  border-color: var(--accent-blue); box-shadow: 0 0 0 2px rgba(89, 158, 254, 0.3);
+  background: var(--island-bg);
+}
+#urlbar-input {
+  flex: 1; background: transparent; border: none;
+  color: var(--urlbar-text); font-size: 13px; outline: none; margin: 0 8px;
+}
+.urlbar-icon {
+  color: var(--tab-text-inactive); opacity: 0.8;
+  cursor: pointer; background: transparent; border:none; display:flex;
+}
+.urlbar-icon:hover { color: var(--accent-blue); }
+#url-spinner {
+  width: 14px; height: 14px; margin-right: 8px;
+  border: 2px solid var(--border); border-top-color: var(--accent-blue);
+  border-radius: 50%; animation: spin 0.8s linear infinite; display: none;
+}
+.loading #url-spinner { display: block; }
+.loading #url-lock { display: none; }
+
+/* --- VIEWPORT AREA --- */
+#viewport {
+  flex: 1; position: relative;
+  border-radius: 10px 10px 0 0; overflow: hidden; margin: 0 6px;
+}
+
+/* IFRAME (WEBSITE) */
+iframe.web-frame { 
+  width: 100%; height: 100%; border: none; 
+  background: #fff; /* Solid white background */
+  display: none; position: absolute; top:0; left:0; z-index: 10;
+}
+iframe.web-frame.active { display: block; }
+
+/* SPEED DIAL (OVERLAY) */
+#speed-dial-view {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: transparent; /* Shows wallpaper */
+  display: flex; flex-direction: column; align-items: center;
+  padding-top: 10vh; overflow-y: auto; z-index: 20;
+  transition: opacity 0.2s;
+}
+#speed-dial-view.hidden { opacity: 0; pointer-events: none; z-index: 0; }
+
+/* Speed Dial Styling */
+.speed-dial-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); 
+  gap: 24px; width: 100%; max-width: 850px; padding: 20px;
+}
+.dial-tile {
+  display: flex; flex-direction: column; align-items: center;
+  cursor: pointer; transition: transform 0.2s; border-radius: 12px; padding: 10px;
+}
+.dial-tile:hover { transform: translateY(-6px); }
+.dial-tile:hover .dial-preview { background: rgba(255,255,255,0.2); border-color: var(--accent-blue); }
+ 
+.dial-preview {
+  width: 120px; height: 90px; background: var(--dial-bg);
+  backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+  border-radius: 16px; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1); border: 1px solid var(--dial-border);
+  margin-bottom: 10px; transition: all 0.2s ease;
+}
+.dial-preview img { width: 50px; height: 50px; object-fit: contain; }
+ 
+.dial-add { font-size: 30px; color: var(--tab-text); opacity: 0.7; }
+.dial-label {
+  font-size: 13px; color: #fff; text-align: center; width: 100%;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  text-shadow: var(--dial-text-shadow); 
+}
+.clock-widget {
+  font-size: 5rem; font-weight: 200; color: #fff;
+  text-shadow: var(--dial-text-shadow); margin-bottom: 40px;
+}
+
+/* MENU POPUP */
+#menu-popup {
+  position: absolute; top: 10px; left: 58px; width: 240px;
+  background: var(--menu-bg); border: 1px solid var(--border);
+  border-radius: 8px; box-shadow: var(--shadow);
+  display: none; flex-direction: column; padding: 8px 0; z-index: 9999;
+}
+#menu-popup.show { display: flex; animation: fadein 0.15s ease; }
+.menu-item {
+  padding: 10px 16px; display: flex; align-items: center; gap: 12px;
+  color: var(--menu-text); cursor: pointer; font-size: 13px;
+}
+.menu-item:hover { background: var(--tab-active); }
+.menu-sep { height: 1px; background: var(--border); margin: 4px 0; }
+.menu-item svg { width: 16px; height: 16px; fill: currentColor; opacity: 0.8; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fadein { from { opacity:0; transform:translateX(-10px); } to { opacity:1; transform:translateX(0); } }
